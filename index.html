@@ -60,6 +60,7 @@
 
 
 
+
     <div id="animation-layer" class="fixed inset-0 pointer-events-none"></div>
 
     <main class="relative z-10 w-full max-w-md">
@@ -118,9 +119,10 @@
                 </div>
             </div>
         </div>
-        <audio id="bgMusic" autoplay loop preload="auto" playsinline>
+        <audio id="bgMusic" loop preload="auto" playsinline>
             <source src="song/love_tune.mp3" type="audio/mpeg">
         </audio>
+
 
 
 
@@ -209,25 +211,34 @@
         const counts = ['1 ❤️', '2 💕', '3 🌹'];
         let index = 0;
 
+        // Counting animation
         const counterInterval = setInterval(() => {
             countText.innerText = counts[index];
             countText.classList.remove('animate-pulse');
-            void countText.offsetWidth; // restart animation
+            void countText.offsetWidth;
             countText.classList.add('animate-pulse');
+
             index++;
+            if (index === counts.length) {
+                clearInterval(counterInterval); // STOP at 3
+            }
         }, 700);
 
+        // Auto play + auto hide loader
         music.addEventListener('canplaythrough', () => {
             music.currentTime = 30; // 30 sec skip
             music.play().then(() => {
-                clearInterval(counterInterval);
                 setTimeout(() => {
                     loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 400);
-                }, 2200); // 1-2-3 ke baad hide
+                    loader.style.pointerEvents = 'none';
+                    setTimeout(() => loader.remove(), 500);
+                }, 300); // smooth exit
+            }).catch(err => {
+                console.log("Autoplay blocked:", err);
             });
         });
     </script>
+
 
 
 
