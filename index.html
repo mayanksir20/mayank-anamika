@@ -98,15 +98,30 @@
 
         <div id="celebration-box" class="hidden opacity-0 transform translate-y-10 transition-all duration-700">
             <div class="glass-ui p-8 md:p-12 rounded-[3rem] text-center relative">
+
+                <!-- Heart Icon -->
                 <div
                     class="absolute -top-10 left-1/2 -translate-x-1/2 bg-red-600 w-20 h-20 rounded-full flex items-center justify-center border-4 border-black">
                     <i class="fa-solid fa-heart text-white text-3xl animate-ping"></i>
                 </div>
 
-                <h2 class="text-3xl font-black mb-6 mt-6">I Knew It! 😘</h2>
+                <!-- Image -->
+                <div class="flex justify-center mt-8 mb-4">
+                    <img src="img/anamika.jpg" alt="Anamika"
+                        class="w-24 h-24 rounded-full object-cover border-4 border-red-500 shadow-lg">
+                </div>
+
+                <!-- Name -->
+                <h3 class="text-red-400 font-bold text-lg tracking-widest mb-2">
+                    MAYANK ❤️ ANAMIKA
+                </h3>
+
+                <h2 class="text-3xl font-black mb-6 mt-2">
+                    I Knew It! 😘
+                </h2>
 
                 <p class="text-gray-200 text-lg leading-relaxed mb-6 font-medium italic">
-                    "Phoolon se acchi meri wife hai, <br>
+                    "Phoolon se acchi meri <span class="text-red-400 font-semibold">Anamika</span> hai, <br>
                     Tumhare bina adhuri meri life hai!"
                 </p>
 
@@ -115,13 +130,20 @@
                 </p>
 
                 <div class="pt-6 border-t border-white/10">
-                    <span class="text-red-500 font-bold tracking-[0.2em] uppercase text-xs">Love You Hamesha ❤️</span>
+                    <span class="text-red-500 font-bold tracking-[0.2em] uppercase text-xs">
+                        Love You Hamesha ❤️
+                    </span>
                 </div>
             </div>
         </div>
-        <audio id="bgMusic" loop preload="auto" playsinline>
-            <source src="song/love_tune.mp3" type="audio/mpeg">
+
+
+
+
+        <audio id="bgMusic" src="song/Hawayein Jab Harry Met Sejal (original Motion Picturetrack) 128 Kbps (1).mp3"
+            autoplay loop muted playsinline>
         </audio>
+
 
 
 
@@ -204,42 +226,60 @@
 
     </script>
     <script>
-        const music = document.getElementById('bgMusic');
         const loader = document.getElementById('countLoader');
         const countText = document.getElementById('countText');
+
+        // agar tumhara main content / question-box ya celebration-box hai
+        const mainContent = document.getElementById('question-box');
+        // ya agar directly celebration dikhana ho:
+        // const mainContent = document.getElementById('celebration-box');
 
         const counts = ['1 ❤️', '2 💕', '3 🌹'];
         let index = 0;
 
-        // Counting animation
         const counterInterval = setInterval(() => {
             countText.innerText = counts[index];
+
+            // animation restart trick
             countText.classList.remove('animate-pulse');
             void countText.offsetWidth;
             countText.classList.add('animate-pulse');
 
             index++;
-            if (index === counts.length) {
-                clearInterval(counterInterval); // STOP at 3
-            }
-        }, 700);
 
-        // Auto play + auto hide loader
-        music.addEventListener('canplaythrough', () => {
-            music.currentTime = 30; // 30 sec skip
-            music.play().then(() => {
+            if (index === counts.length) {
+                clearInterval(counterInterval);
+
+                // thoda sa pause 3 ke baad
                 setTimeout(() => {
+                    // loader hide
                     loader.style.opacity = '0';
                     loader.style.pointerEvents = 'none';
-                    setTimeout(() => loader.remove(), 500);
-                }, 300); // smooth exit
-            }).catch(err => {
-                console.log("Autoplay blocked:", err);
-            });
-        });
+
+                    setTimeout(() => {
+                        loader.remove();
+
+                        // page content show automatically
+                        if (mainContent) {
+                            mainContent.classList.remove('hidden');
+                            mainContent.classList.add('opacity-100', 'translate-y-0');
+                        }
+                    }, 500);
+
+                }, 500);
+            }
+        }, 700);
     </script>
 
-
+    <script>
+        window.addEventListener("load", () => {
+            const music = document.getElementById("bgMusic");
+            setTimeout(() => {
+                music.muted = false;
+                music.volume = 0.8;
+            }, 1000);
+        });
+    </script>
 
 
 </body>
